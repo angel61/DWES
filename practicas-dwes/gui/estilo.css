@@ -1,0 +1,65 @@
+html{
+    font-family:Verdana;
+}
+body{
+    background-color: lightgray;
+    margin: 0px;
+}
+.titulo{
+float:left;
+width:65%;
+text-align: center;
+}
+
+.navbar{
+    float:left;
+    width:100%;
+    background-color: #0C0F3B;
+    color: white;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+a{
+    color: white;
+    margin: 1rem;
+    text-decoration:none;
+}
+a#volver{
+    text-decoration:underline;
+    margin: 0px;
+}
+a#volver:hover{
+    color: rgb(206, 244, 255);
+}
+
+.contenido{
+    background-color: lightslategrey;
+    width:100%;
+    float: left;
+    padding:40px;
+}
+.login{
+    float:right;
+    margin:8px;
+}
+.inicio{
+    width:15em;
+    align-self: center;
+}
+.colInicio{
+    text-align: center;
+}
+td{
+    padding: 0.5em;
+}
+
+.footer{
+    background-color: black;
+    color: white;
+    align-items: center;
+    width:100%;
+    float: left;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+}

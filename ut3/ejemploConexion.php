@@ -1,0 +1,10 @@
+<?php
+$host="localhost";
+$us="root";
+$pw="";
+$bd="test";
+@$conn=mysqli_connect($host,$us,$pw,$bd);
+if($conn){
+    var_dump($conn);
+}
+mysqli_close($conn);

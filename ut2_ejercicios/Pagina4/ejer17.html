@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="ejer17.php" method="post">
+
+        Texto:<br>
+        <textarea name="texto" rows="4" cols="70">Escribe aqui</textarea>
+
+        <fieldset>
+            <legend>Caracteristicas del borde</legend>
+
+            Tamaño: <input type="number" name="tamanno" min="0" max="10"><br>
+
+            Estilo:
+            <select name="estilo" id="estilo">
+                <option value="hide">oculto</option>
+                <option value="solid">liso</option>
+                <option value="double">doble</option>
+                <option value="dotted">punteado</option>
+            </select><br>
+
+            Color:
+            <select name="color" id="color">
+                <option value="black">Negro</option>
+                <option value="red">Rojo</option>
+                <option value="blue">Azul</option>
+                <option value="yellow">Amarillo</option>
+            </select><br>
+
+        </fieldset>
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+
+</html>

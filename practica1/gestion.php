@@ -1,0 +1,9 @@
+<?php
+    if(isset($_POST["nombre"])){       
+        $nombreAux=htmlspecialchars($_POST["nombre"]);
+        $apellidosAux=htmlspecialchars($_POST["apellidos"]);
+        $telefonoAux=htmlspecialchars($_POST["telefono"]);
+        $correoAux=htmlspecialchars($_POST["correo"]);
+        $cursoAux=htmlspecialchars($_POST["curso"]);
+        $_SESSION[$nombreAux]=array($nombreAux,$apellidosAux,$telefonoAux,$correoAux,$cursoAux);
+    }
