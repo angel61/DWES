@@ -1,6 +1,6 @@
 <div class="contenido">
     <?php
-        if ($usuAnt || validarUsuario($us, $pw)) {
+        if (($usuAnt || validarUsuario($us, $pw))) {
     ?>
         <h2><?php echo $seccion?></h2>
     <?php

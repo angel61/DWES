@@ -5,6 +5,7 @@
     </div>
 <div class="login">
         <?php
+        const tipoAcceso=["e","c"];
         $us = $_REQUEST['txtUser'] ?? "";
         $pw = $_REQUEST['txtPass'] ?? "";
 
