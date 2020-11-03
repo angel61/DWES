@@ -1,6 +1,6 @@
 <?php
-function validarUsuario(string $us,string $pw):bool {
     require_once("accdat/constantesDB.php");
+function validarUsuario(string $us,string $pw):bool {
 
     $validado = false;
     $tipo = "e";
@@ -44,7 +44,7 @@ function acceso($tipo){
 }
 
 function importarCSV(string $file, string $tbl):void{
-    echo file_get_contents($file);
+    //echo file_get_contents($file);
 
     @$conn=mysqli_connect(host,us,pw,bd);
     if($conn){

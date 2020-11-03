@@ -2,9 +2,15 @@
 $host="localhost";
 $us="root";
 $pw="";
-$bd="test";
+$bd="escuela";
 @$conn=mysqli_connect($host,$us,$pw,$bd);
 if($conn){
-    var_dump($conn);
+    $sql="select * from usuarios";
+    $rest=mysqli_query($conn,$sql);
+    echo "<select>";
+    while($row=mysqli_fetch_assoc($rest)){
+        echo "<option value=".$row['tipo']."\"> ".$row['usuario']."</option>";
+    }
+    echo "</select>";
 }
 mysqli_close($conn);

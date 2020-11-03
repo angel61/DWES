@@ -19,7 +19,10 @@
     <div class="contenido">
     <?php
         if (acceso(tipoAcceso[0])) {
+            if(!isset($_FILES['flFichero']['tmp_name'])||!strlen($_FILES['flFichero']['tmp_name']))
             require_once("gui/importCSV.php");
+            else
+                importarCSV($_FILES['flFichero']['tmp_name'], $_REQUEST['lstTabla']);
         } else {
             require_once("gui/no_acces.html");
         }

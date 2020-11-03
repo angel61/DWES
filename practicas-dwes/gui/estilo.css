@@ -1,9 +1,12 @@
-html{
+*{
     font-family:Verdana;
+    box-sizing: border-box;
 }
 body{
     background-color: lightgray;
     margin: 0px;
+    width:100%;
+    height:100vh;
 }
 .titulo{
 float:left;
@@ -35,8 +38,10 @@ a#volver:hover{
 .contenido{
     background-color: lightslategrey;
     width:100%;
+    min-height:66.6vh;
     float: left;
     padding:40px;
+    padding-right: 0px;
 }
 .login{
     float:right;
