@@ -1,4 +1,3 @@
-
    <?php
     const host="localhost";
     const us="root";

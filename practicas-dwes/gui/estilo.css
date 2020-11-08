@@ -68,3 +68,12 @@ td{
     bottom: 0;
     text-align: center;
 }
+
+.frm-row{
+    padding: .5em;
+}
+
+.frm-row input,.frm-row select{
+    position: absolute;
+    left:18em;
+}

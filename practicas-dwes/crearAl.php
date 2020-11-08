@@ -13,10 +13,22 @@
 
 <body onload="onLoad_body();">
 
-    <?php require_once("gui/cabecera.php"); 
-    $seccion="Crear alumno";
-    require_once("gui/contenido.php"); 
+    <?php
+        require_once("gui/cabecera.php");
     ?>
+    <div class="contenido">
+        <?php
+        if (acceso(tipoAcceso[0])) {
+            if (!isset($_FILES['flFichero']['tmp_name'])||!strlen($_FILES['flFichero']['tmp_name'])) {
+                require_once("gui/crearAl.php");
+            } else {
+                importarCSV($_FILES['flFichero']['tmp_name'], $_REQUEST['lstTabla']);
+            }
+        } else {
+            require_once("gui/no_acces.html");
+        }
+    ?>
+    </div>
 
 </body>
 
