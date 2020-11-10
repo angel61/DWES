@@ -9,7 +9,17 @@
 </head>
 
 <body>
-
+<?php
+session_start();
+$_SESSION["preguntas"]= array();
+$_SESSION["cont"]=0;
+$_SESSION["historico"]=array();
+$_SESSION["puntuacion"]= array();
+$_SESSION["puntuacion"]['ciencia']=0;
+$_SESSION["puntuacion"]['deporte']=0;
+$_SESSION["puntuacion"]['arte']=0;
+$_SESSION["puntuacion"]['historia']=0;
+?>
     <div class="contenido">
         <div class="imagen-pregunta">
             <h1>TOP 5</h1>
