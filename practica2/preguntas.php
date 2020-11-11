@@ -9,25 +9,10 @@
     <link rel="stylesheet" href="estilo.css">
 </head>
 
-<body onload="onLoad_body();">
-    <?php
-    require_once("accdat/accesoFicheros.php");
-    $opcionElegida=$_POST["btn"]??'';
-    $contador=$_SESSION["cont"];
-    $preguntaRespondida=$_SESSION["historico"][$contador]??false;
-    $categoria=$_SESSION['pregunta'][6]??'';
-        if ($opcionElegida!=''&&!$preguntaRespondida) {
-            if (comrobarPregunta($opcionElegida, $_SESSION['pregunta'])) {
-                $_SESSION['puntuacion'][$categoria]+=10;
-            } 
-            $_SESSION["cont"]++;
-            $_SESSION["historico"][$_SESSION["cont"]-1]=true;
-        }
-        if($_SESSION["cont"]>=count($_SESSION["preguntas"]))
-        resetPreguntas();
-        $_SESSION['pregunta']=cargarPregunta();
-    ?>
-    <form action="preguntas.php" method="post">
+<body>
+
+    <form action="comprobar_pregunta.php" method="post">
+        <input type="hidden" name="hdnPregunta" value="<?php echo $_SESSION["cont"]; ?>">
         <div class="menu">
             <?php echo "Arte: ".$_SESSION['puntuacion']['arte'].
             " - Ciencia: ".$_SESSION['puntuacion']['ciencia'].
@@ -36,41 +21,43 @@
         </div>
         <div class="contenido">
             <div class="imagen-pregunta">
+                <img src="<?php echo $_SESSION['pregunta'][0]; ?>">
             </div>
             <div class="control">
                 <div class="titulo">
                     <h1>
                         <?php
-               echo  $_SESSION['pregunta'][1];
-                ?>
+                            echo  $_SESSION['pregunta'][1];
+                        ?>
                     </h1>
                 </div>
                 <div class="opciones">
                     <div class="opcion">
                         <button name="btn" value="b1">
                             <?php
-                echo $_SESSION['pregunta'][2];
-                ?>
+                                echo $_SESSION['pregunta'][2];
+                            ?>
                         </button>
                     </div>
                     <div class="opcion">
                         <button name="btn" value="b2">
                             <?php
-                echo $_SESSION['pregunta'][3];
-                ?></button>
+                                echo $_SESSION['pregunta'][3];
+                            ?>
+                        </button>
                     </div>
                     <div class="opcion">
                         <button name="btn" value="b3">
                             <?php
-                echo $_SESSION['pregunta'][4];
-                ?>
+                                echo $_SESSION['pregunta'][4];
+                            ?>
                         </button>
                     </div>
                     <div class="opcion">
                         <button name="btn" value="b4">
                             <?php
-               echo $_SESSION['pregunta'][5];
-                ?>
+                                echo $_SESSION['pregunta'][5];
+                            ?>
                         </button>
                     </div>
                 </div>

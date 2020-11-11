@@ -16,7 +16,8 @@ function cargarPregunta()
         }
         fclose($fp);
     }
-        return $_SESSION["preguntas"][$cont];
+     
+    return $_SESSION["preguntas"][$cont];
 }
 function comrobarPregunta($respuesta,$pregunta)
 {

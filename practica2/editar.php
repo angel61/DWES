@@ -11,8 +11,23 @@
 <body>
     <?php
     require_once("accdat/accesoFicheros.php");
-        if(isset($_POST["txtTitulo"])){
-            $imagen=$_POST["imagenPregunta"]??'img/default.png';
+        if (isset($_POST["txtTitulo"])) {
+            $carpetaDestino = "img/";
+            $imagenArchivo = $_FILES['imagenPregunta']['name'];
+            $ruta = pathinfo($imagenArchivo);
+            $nombreImagen = $ruta['filename'];
+            $extension = $ruta['extension'];
+            $archivoTemporal = $_FILES['imagenPregunta']['tmp_name'];
+            $rutaDestino = $carpetaDestino.$nombreImagen.".".$extension;
+            
+            $imagen=$rutaDestino??'img/default.png';
+            
+            if (!file_exists($rutaDestino)) {
+                move_uploaded_file($archivoTemporal, $rutaDestino);
+            }
+
+
+
             $titulo=$_POST["txtTitulo"];
             $pregunta1=$_POST["txtOpcion1"];
             $pregunta2=$_POST["txtOpcion2"];
@@ -32,6 +47,7 @@
     </div>
     <div class="contenido">
         <div class="imagen-pregunta">
+            <input type="file" name="imagenPregunta"/>
         </div>
         <div class="control">
             <div class="titulo">

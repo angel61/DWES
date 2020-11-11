@@ -40,7 +40,7 @@ $_SESSION["puntuacion"]['historia']=0;
                     <a href="editar.php">Editar preguntas</a>
                 </div>
                 <div class="opcion">
-                    <a href="preguntas.php">Jugar una partida</a>
+                    <a href="comprobar_pregunta.php">Jugar una partida</a>
                 </div>
             </div>
         </div>
