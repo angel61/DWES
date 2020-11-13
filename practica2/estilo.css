@@ -75,14 +75,28 @@ body{
     width: 100%;
     text-align: center;
 }
-.imagen-pregunta>ul{
-    margin: 0 auto;
-    list-style: none;
-    padding: 0;
-    width:5em;
+
+.imagen-pregunta>div{
+    width:100%;
+
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    row-gap: .5em;
+    column-gap: 1em;
+}
+.imagen-pregunta>div>div{
+    width:40%;
     overflow: visible;
     font-size: 1.1em;
 }
+.imagen-pregunta .puntuacion{
+    text-align: right;
+}
+.imagen-pregunta .usuario{
+    text-align: left;
+}
+
 .imagen-pregunta>img{
     display: block;
     width: 10vw;
@@ -164,4 +178,50 @@ form{
     flex-flow: column wrap;
     justify-content: flex-start;
     row-gap: 5%;
+}
+
+
+.empezar-usuario{
+    margin: 0 auto;
+    padding: .5em;
+
+    background-color: #048ABF;
+    border-radius: 2em;
+
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: space-around;
+}
+
+.formEmpezar input[type="submit"]{
+    margin:.3em .2em;
+    padding-left: .5em;
+    border: none;
+    outline: none;
+    border-radius: 5em;
+    min-width: 35%;
+}
+
+.opcion-empezar{
+    border:none;
+    min-width: 35%;
+    padding: .5em;
+    border-radius: 5em;
+}
+
+.formEmpezar{
+    height: 20em;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    row-gap: 5%;
+    border: 3px solid #F2F2F2;
+    border-radius: 2em;
+    width: 30em;
+    padding: 5em;
+}
+
+.formEmpezar .opcion{
+    padding: 1em;
 }

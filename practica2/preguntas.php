@@ -10,7 +10,12 @@
 </head>
 
 <body>
-
+    <?php
+    if (isset($_POST['txtUsuario'])) {
+        $_SESSION['usuario']=$_POST['txtUsuario'];
+    }
+        if (isset($_SESSION['usuario'])) {
+            ?>
     <form action="comprobar_pregunta.php" method="post">
         <input type="hidden" name="hdnPregunta" value="<?php echo $_SESSION["cont"]; ?>">
         <div class="menu">
@@ -27,43 +32,55 @@
                 <div class="titulo">
                     <h1>
                         <?php
-                            echo  $_SESSION['pregunta'][1];
-                        ?>
+                            echo  $_SESSION['pregunta'][1]; ?>
                     </h1>
                 </div>
                 <div class="opciones">
                     <div class="opcion">
                         <button name="btn" value="b1">
                             <?php
-                                echo $_SESSION['pregunta'][2];
-                            ?>
+                                echo $_SESSION['pregunta'][2]; ?>
                         </button>
                     </div>
                     <div class="opcion">
                         <button name="btn" value="b2">
                             <?php
-                                echo $_SESSION['pregunta'][3];
-                            ?>
+                                echo $_SESSION['pregunta'][3]; ?>
                         </button>
                     </div>
                     <div class="opcion">
                         <button name="btn" value="b3">
                             <?php
-                                echo $_SESSION['pregunta'][4];
-                            ?>
+                                echo $_SESSION['pregunta'][4]; ?>
                         </button>
                     </div>
                     <div class="opcion">
                         <button name="btn" value="b4">
                             <?php
-                                echo $_SESSION['pregunta'][5];
-                            ?>
+                                echo $_SESSION['pregunta'][5]; ?>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
+
+    <?php
+        } else {
+            ?>
+    <div class="empezar-usuario">
+        <form action="preguntas.php" method="post" class="formEmpezar">
+            <div class="opcion">
+                <label for="txtUsuario">Usuario:</label>
+                <input type="text" name="txtUsuario">
+            </div>
+            <input type="submit" name="¡Empezar!" class="opcion-empezar">
+        </form>
+    </div>
+
+    <?php
+        }
+    ?>
 </body>
 
 </html>

@@ -7,11 +7,20 @@
 
         if ($opcionElegida!='') {
             if (comrobarPregunta($opcionElegida, $_SESSION['pregunta'])) {
-                $_SESSION['puntuacion'][$categoria]+=10;
+                $_SESSION['puntuacion'][$categoria]++;
+                $_SESSION['puntuacion']['total']+=10*$_SESSION["multiplicador"];
+                $_SESSION["multiplicador"]*=2;
+            }else{
+                finPartida();
+                header("Location: index.php");
+                exit;
             }
+
             $_SESSION["cont"]=intval($_POST["hdnPregunta"])+1;
             
             if ($contador>=(count(($_SESSION["preguntas"]))-1)) {
+                $_SESSION['puntuacion']['total']+=1000;
+                finPartida();
                 header("Location: index.php");
                 exit;
             }
