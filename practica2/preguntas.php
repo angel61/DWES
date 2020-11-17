@@ -11,7 +11,7 @@
 
 <body>
     <?php
-    if (isset($_POST['txtUsuario'])) {
+    if (isset($_POST['txtUsuario'])&&strlen($_POST['txtUsuario'])>0) {
         $_SESSION['usuario']=$_POST['txtUsuario'];
     }
         if (isset($_SESSION['usuario'])) {
@@ -30,10 +30,10 @@
             </div>
             <div class="control">
                 <div class="titulo">
-                    <h1>
+                    <h2>
                         <?php
                             echo  $_SESSION['pregunta'][1]; ?>
-                    </h1>
+                    </h2>
                 </div>
                 <div class="opciones">
                     <div class="opcion">
@@ -67,12 +67,12 @@
 
     <?php
         } else {
-            ?>
+    ?>
     <div class="empezar-usuario">
         <form action="preguntas.php" method="post" class="formEmpezar">
             <div class="opcion">
                 <label for="txtUsuario">Usuario:</label>
-                <input type="text" name="txtUsuario">
+                <input type="text" name="txtUsuario" required>
             </div>
             <input type="submit" name="¡Empezar!" class="opcion-empezar">
         </form>

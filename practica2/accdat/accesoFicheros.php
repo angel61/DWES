@@ -16,8 +16,9 @@ function cargarPregunta()
             $_SESSION["preguntas"][]= $preg;
         }
         fclose($fp);
+        shuffle($_SESSION["preguntas"]);
     }
-     
+
     return $_SESSION["preguntas"][$cont];
 }
 

@@ -11,20 +11,15 @@
 <body>
 <?php
 session_start();
+
 require_once("accdat/accesoFicheros.php");
+require_once("funciones.php");
 
-unset($_SESSION['usuario']);
-$_SESSION["preguntas"]= array();
-$_SESSION["cont"]=0;
-$_SESSION["historico"]=array();
-$_SESSION["puntuacion"]= array();
-$_SESSION["puntuacion"]['ciencia']=0;
-$_SESSION["puntuacion"]['deporte']=0;
-$_SESSION["puntuacion"]['arte']=0;
-$_SESSION["puntuacion"]['historia']=0;
-$_SESSION["puntuacion"]['total']=0;
-$_SESSION["multiplicador"]=1;
+if(isset($_SESSION["usuario"])){
+    finPartida();
+}
 
+inicializarSesion();
 $topUsuarios=leerTop();
 ?>
     <div class="contenido">
