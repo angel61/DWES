@@ -2,7 +2,7 @@
 
 function editarPregunta($array)
 {
-    $fp = fopen('preguntas.csv', 'a');
+    $fp = fopen('csv/preguntas.csv', 'a');
     fputcsv($fp, $array);
     fclose($fp);
 }
@@ -11,7 +11,7 @@ function cargarPregunta()
 {
     $cont= $_SESSION["cont"];
     if (count($_SESSION["preguntas"])<=0) {
-        $fp = fopen('preguntas.csv', 'r');
+        $fp = fopen('csv/preguntas.csv', 'r');
         while (($preg = fgetcsv($fp, 1000, ",")) !== false) {
             $_SESSION["preguntas"][]= $preg;
         }
@@ -31,7 +31,7 @@ function comrobarPregunta($respuesta, $pregunta)
 function leerTop()
 {
     $top= [];
-    $fp = fopen('topJugadores.csv', 'r');
+    $fp = fopen('csv/topJugadores.csv', 'r');
     while (($usuario = fgetcsv($fp, 1000, ",")) !== false) {
         $top[]= $usuario;
     }
@@ -62,7 +62,7 @@ function finPartida()
     if(count($jugadores)>5)
     array_pop($jugadores);
     
-    $fp = fopen('topJugadores.csv', 'w');
+    $fp = fopen('csv/topJugadores.csv', 'w');
     foreach ($jugadores as $elemento) {
         fputcsv($fp, $elemento);
     }

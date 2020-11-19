@@ -1,51 +1,40 @@
 <?php
     session_start();
     require_once("accdat/accesoFicheros.php");
-    
-    function finPreguntas()
-    {
-    }
+    require_once("funciones.php");
 
 
     $opcionElegida=$_POST["btn"]??'';
-    $contador=$_SESSION["cont"];
+    $auxCont=$_POST["hdnPregunta"]??"0";
+    $contador=intval($auxCont);
     $categoria=$_SESSION['pregunta'][6]??'';
 
         if ($opcionElegida!='') {
-            if (comrobarPregunta($opcionElegida, $_SESSION['pregunta'])) {
-                $comprobacion=$_SESSION["registro"][intval($_POST["hdnPregunta"])]??true;
-                if ($comprobacion){
-                $_SESSION['puntuacion'][$categoria]++;
-                $_SESSION['puntuacion']['total']+=10*$_SESSION["multiplicador"];
+            if (comrobarPregunta($opcionElegida, $_SESSION['preguntas'][$contador])) {
+                $comprobacion=$_SESSION["registro"][$contador]??true;
+                if ($comprobacion) {
+                    $_SESSION['puntuacion'][$categoria]++;
+                    $_SESSION['puntuacion']['total']+=10*$_SESSION["multiplicador"];
                 
-                $_SESSION["multiplicador"]*=2;
-                $_SESSION["registro"][intval($_POST["hdnPregunta"])]=false;
-            }
+                    $_SESSION["multiplicador"]*=2;
+                    $_SESSION["registro"][$contador]=false;
+                }
             } else {
                 header("Location: index.php");
                 exit;
             }
 
-            $_SESSION["cont"]=intval($_POST["hdnPregunta"])+1;
+            $_SESSION["cont"]=$contador+1;
 
+            esFinDePartida();
             $_SESSION['pregunta']=cargarPregunta();
             while ($_SESSION["puntuacion"][($_SESSION['pregunta'][6])]>=5&&($_SESSION["cont"]<(count($_SESSION["preguntas"])-1))) {
                 $_SESSION["cont"]++;
                 $_SESSION['pregunta']=cargarPregunta();
             }
-            
-            if ($_SESSION["cont"]>(count(($_SESSION["preguntas"]))-1)) {
-                $_SESSION['puntuacion']['total']+=1000;
-                header("Location: index.php");
-                exit;
-            }
-
-            header("Location: preguntas.php");
-            exit;
+            esFinDePartida();
         }
         
         if ($contador==0) {
             $_SESSION['pregunta']=cargarPregunta();
-            header("Location: preguntas.php");
-            exit;
         }

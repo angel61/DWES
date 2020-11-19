@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
-<?php session_start();?>
+<?php require_once("comprobar_pregunta.php");?>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
 
 <body>
@@ -16,7 +16,7 @@
     }
         if (isset($_SESSION['usuario'])) {
             ?>
-    <form action="comprobar_pregunta.php" method="post">
+    <form action="preguntas.php" method="post">
         <input type="hidden" name="hdnPregunta" value="<?php echo $_SESSION["cont"]; ?>">
         <div class="menu">
             <?php echo "Arte: ".$_SESSION['puntuacion']['arte'].
@@ -64,15 +64,14 @@
             </div>
         </div>
     </form>
-            
+
     <div class="tipoPregunta">
         <p><?php
-                    echo ucfirst($_SESSION['pregunta'][6]); 
-                ?></p>
+                    echo ucfirst($_SESSION['pregunta'][6]); ?></p>
     </div>
     <?php
         } else {
-    ?>
+            ?>
     <div class="empezar-usuario">
         <form action="preguntas.php" method="post" class="formEmpezar">
             <div class="opcion">
