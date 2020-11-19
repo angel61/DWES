@@ -24,11 +24,8 @@ function cargarPregunta()
 
 function comrobarPregunta($respuesta, $pregunta)
 {
-    if ($respuesta==$pregunta[7]) {
-        return true;
-    } else {
-        return false;
-    }
+    $comprobacion=$respuesta==$pregunta[7];
+    return $comprobacion;
 }
 
 function leerTop()

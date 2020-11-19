@@ -64,7 +64,12 @@
             </div>
         </div>
     </form>
-
+            
+    <div class="tipoPregunta">
+        <p><?php
+                    echo ucfirst($_SESSION['pregunta'][6]); 
+                ?></p>
+    </div>
     <?php
         } else {
     ?>

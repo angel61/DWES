@@ -229,3 +229,25 @@ form{
 .formEmpezar .opcion{
     padding: 1em;
 }
+
+.tipoPregunta{
+    background-image: radial-gradient( circle farthest-corner at 22.4% 21.7%,  rgba(4,189,228,1) 0%, rgba(2,83,185,1) 100.2% );
+    position: absolute;
+    top: 11%;
+    left: 21%;
+    height: 7em;
+    width: 7em;
+    border: 3px solid #F2F2F2;
+    border-radius: 100%;
+    padding: 0;
+    
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-content: center;
+}
+.tipoPregunta p{
+    height: 1.5em;
+    width: 100%;
+    text-align: center;
+}

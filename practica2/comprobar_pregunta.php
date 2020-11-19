@@ -13,10 +13,14 @@
 
         if ($opcionElegida!='') {
             if (comrobarPregunta($opcionElegida, $_SESSION['pregunta'])) {
+                $comprobacion=$_SESSION["registro"][intval($_POST["hdnPregunta"])]??true;
+                if ($comprobacion){
                 $_SESSION['puntuacion'][$categoria]++;
                 $_SESSION['puntuacion']['total']+=10*$_SESSION["multiplicador"];
                 
                 $_SESSION["multiplicador"]*=2;
+                $_SESSION["registro"][intval($_POST["hdnPregunta"])]=false;
+            }
             } else {
                 header("Location: index.php");
                 exit;
