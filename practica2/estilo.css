@@ -43,7 +43,9 @@ body{
     margin: 0 auto;
     width: 50%;
     height: 80%;
-    background-color: #048ABF;
+    background-color: #8BC6EC;
+background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+
     border-radius: 2em;
     padding: .5em;
 }
@@ -143,6 +145,7 @@ body{
 .opcion>a{
     padding: .5em;
     text-decoration: none;
+    text-align: center;
     color:  #F2F2F2;
     border-radius: 5em;
     display: block;
@@ -184,8 +187,9 @@ form{
 .empezar-usuario{
     margin: 0 auto;
     padding: .5em;
-
-    background-color: #048ABF;
+    background-color: #8BC6EC;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+    
     border-radius: 2em;
 
     display: flex;
