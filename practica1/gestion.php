@@ -5,5 +5,5 @@
         $telefonoAux=htmlspecialchars($_POST["telefono"]);
         $correoAux=htmlspecialchars($_POST["correo"]);
         $cursoAux=htmlspecialchars($_POST["curso"]);
-        $_SESSION[$nombreAux]=array($nombreAux,$apellidosAux,$telefonoAux,$correoAux,$cursoAux);
+        $_SESSION['gestion'][$nombreAux]=array($nombreAux,$apellidosAux,$telefonoAux,$correoAux,$cursoAux);
     }
