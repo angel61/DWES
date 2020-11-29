@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php session_start();?>
+<?php session_start(); ?>
 <html lang="es">
 
 <head>
@@ -10,6 +10,8 @@
 </head>
 
 <body onload="onLoad_body();">
+<!-- En este php solo contiene el html con las llamadas a cada archivo php -->
+<!-- El html contiene dos formulario para dividir la creacion de alumnos y la consulta de alumnos -->
 <div class="contenido">
     <div class="gestion">
         <form class="inputs" action="index.php" method="POST">
@@ -48,7 +50,7 @@
         </div>
     </div>
 </div>
-    <script type="text/javascript" src="js/eventos.js"></script>
+<script type="text/javascript" src="js/eventos.js"></script>
 </body>
 
 </html>
