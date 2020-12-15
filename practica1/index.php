@@ -10,7 +10,7 @@
 </head>
 
 <body onload="onLoad_body();">
-<!-- En este php solo contiene el html con las llamadas a cada archivo php -->
+<!-- En este php solo contiene el html con las llamadas a cada archivo php y eventos de js -->
 <!-- El html contiene dos formulario para dividir la creacion de alumnos y la consulta de alumnos -->
 <div class="contenido">
     <div class="gestion">

@@ -15,11 +15,14 @@ session_start();
 require_once("accdat/accesoFicheros.php");
 require_once("funciones.php");
 
+#Si se vuelve de una partida se guarda la partida si el jugador entra en el top
 if(isset($_SESSION["usuario"])){
     finPartida();
 }
 
 inicializarSesion();
+
+#Se lee el top de jugadores y se muestra.
 $topUsuarios=leerTop();
 ?>
     <div class="contenido">

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<?php require_once("comprobar_pregunta.php");?>
+<?php require_once("comprobar_pregunta.php"); ?>
 
 <head>
     <meta charset="UTF-8">
@@ -10,19 +10,22 @@
 </head>
 
 <body>
-    <?php
-    if (isset($_POST['txtUsuario'])&&strlen($_POST['txtUsuario'])>0) {
-        $_SESSION['usuario']=$_POST['txtUsuario'];
-    }
-        if (isset($_SESSION['usuario'])) {
-            ?>
+<?php
+#Si se establece el nombre del jugador se guarda en la sesion
+if (isset($_POST['txtUsuario']) && strlen(trim($_POST['txtUsuario'])) > 0) {
+    $_SESSION['usuario'] = $_POST['txtUsuario'];
+}
+
+#Si el nombre de usuario esta establecido se muestran las preguntas
+if (isset($_SESSION['usuario'])) {
+    ?>
     <form action="preguntas.php" method="post">
         <input type="hidden" name="hdnPregunta" value="<?php echo $_SESSION["cont"]; ?>">
         <div class="menu">
-            <?php echo "Arte: ".$_SESSION['puntuacion']['arte'].
-            " - Ciencia: ".$_SESSION['puntuacion']['ciencia'].
-            " - Historia: ".$_SESSION['puntuacion']['historia'].
-            " - Deporte: ".$_SESSION['puntuacion']['deporte']; ?>
+            <?php echo "Arte: " . $_SESSION['puntuacion']['arte'] .
+                " - Ciencia: " . $_SESSION['puntuacion']['ciencia'] .
+                " - Historia: " . $_SESSION['puntuacion']['historia'] .
+                " - Deporte: " . $_SESSION['puntuacion']['deporte']; ?>
         </div>
         <div class="contenido">
             <div class="imagen-pregunta">
@@ -32,32 +35,32 @@
                 <div class="titulo">
                     <h2>
                         <?php
-                            echo  $_SESSION['pregunta'][1]; ?>
+                        echo $_SESSION['pregunta'][1]; ?>
                     </h2>
                 </div>
                 <div class="opciones">
                     <div class="opcion">
                         <button name="btn" value="b1">
                             <?php
-                                echo $_SESSION['pregunta'][2]; ?>
+                            echo $_SESSION['pregunta'][2]; ?>
                         </button>
                     </div>
                     <div class="opcion">
                         <button name="btn" value="b2">
                             <?php
-                                echo $_SESSION['pregunta'][3]; ?>
+                            echo $_SESSION['pregunta'][3]; ?>
                         </button>
                     </div>
                     <div class="opcion">
                         <button name="btn" value="b3">
                             <?php
-                                echo $_SESSION['pregunta'][4]; ?>
+                            echo $_SESSION['pregunta'][4]; ?>
                         </button>
                     </div>
                     <div class="opcion">
                         <button name="btn" value="b4">
                             <?php
-                                echo $_SESSION['pregunta'][5]; ?>
+                            echo $_SESSION['pregunta'][5]; ?>
                         </button>
                     </div>
                 </div>
@@ -67,11 +70,12 @@
 
     <div class="tipoPregunta">
         <p><?php
-                    echo ucfirst($_SESSION['pregunta'][6]); ?></p>
+            echo ucfirst($_SESSION['pregunta'][6]); ?></p>
     </div>
     <?php
-        } else {
-            ?>
+#Si no esta establecido el usuario se muestrala interfaz de introducir usuario
+} else {
+    ?>
     <div class="empezar-usuario">
         <form action="preguntas.php" method="post" class="formEmpezar">
             <div class="opcion">
@@ -83,8 +87,8 @@
     </div>
 
     <?php
-        }
-    ?>
+}
+?>
 </body>
 
 </html>

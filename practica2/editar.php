@@ -11,7 +11,13 @@
 <body>
     <?php
     require_once("accdat/accesoFicheros.php");
-        if (isset($_POST["txtTitulo"])) {
+        # Si se el formulario se envio con datos se guardan los datos en un array
+        # y se guardan en el archivo de preguntas
+        if (isset($_POST["txtTitulo"])&&isset($_POST["txtOpcion1"])&&isset($_POST["txtOpcion2"])
+            &&isset($_POST["txtOpcion3"])&&isset($_POST["txtOpcion4"])&&isset($_POST["slcTipo"])
+            &&isset($_POST["correcto"])) {
+
+            #Se guarda la imagen si se subio y se guarda el string de la ruta
             if(strlen($_FILES['imagenPregunta']['name'])>0){
                 echo("a".$_FILES['imagenPregunta']['name']."a");
                 $carpetaDestino = "img/";
@@ -27,8 +33,6 @@
             if (!file_exists($imagen)) {
                 move_uploaded_file($archivoTemporal, $imagen);
             }
-
-
 
             $titulo=$_POST["txtTitulo"];
             $pregunta1=$_POST["txtOpcion1"];
