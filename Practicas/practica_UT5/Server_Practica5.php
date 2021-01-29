@@ -1,19 +1,20 @@
 <?php
+//Servidor
 require_once("nusoap/lib/nusoap.php");
 $server = new soap_server();
 $ns = "test";
 $server->configureWSDL('nuSOAP_SERVER', $ns);
 $server->wsdl->schemaTargetNamespace = $ns;
+
 $server->register('loginMiServicio', array('usuario' => 'xsd:string', 'pass' => 'xsd:string'), array('return' => 'xsd:string'), $ns);
-
 $server->register('echoMiServicio', array('token' => 'xsd:string', 'respuesta' => 'xsd:string'), array('return' => 'xsd:string'), $ns);
-
 $server->register('dateMiServicio', array('token' => 'xsd:string'), array('return' => 'xsd:string'), $ns);
 
 include_once("accdat/BBDD.php");
+
 function loginMiServicio($usuario, $pass)
 {
-    $res = "Usuario no valido";
+    $res = "Usuario o contraseña no valida";
 
     $token = sha1(microtime(true) . "-" . $usuario . "-" . $pass);
 
@@ -22,7 +23,7 @@ function loginMiServicio($usuario, $pass)
     unset($bbdd);
 
     if ($solucion === 1)
-        $res = "Token: " . $token;
+        $res = $token;
 
     return $res;
 }

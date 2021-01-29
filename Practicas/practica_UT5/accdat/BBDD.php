@@ -1,5 +1,5 @@
 <?php
-
+//Objeto de base de datos
 class BBDD
 {
     private const SRV = 'localhost';
