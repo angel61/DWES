@@ -1,0 +1,20 @@
+*{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+table{
+    text-align: left;
+}
+th,td{
+    padding: .5em;
+    border: 1px solid black;
+}
+th{
+    background-color: rgb(187, 187, 187);
+}
+td{
+    text-align: center;
+}
+.ganador{
+    font-weight: bolder;
+    background-color: rgb(235, 235, 235);
+}

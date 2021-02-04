@@ -10,6 +10,7 @@ $server->register('loginMiServicio', array('usuario' => 'xsd:string', 'pass' => 
 $server->register('echoMiServicio', array('token' => 'xsd:string', 'respuesta' => 'xsd:string'), array('return' => 'xsd:string'), $ns);
 $server->register('dateMiServicio', array('token' => 'xsd:string'), array('return' => 'xsd:string'), $ns);
 
+//Se hace include a la clase de base de datos
 include_once("accdat/BBDD.php");
 
 function loginMiServicio($usuario, $pass)

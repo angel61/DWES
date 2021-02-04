@@ -70,4 +70,18 @@ class BBDD
         }
         return $ret;
     }
+    public function updatePersona($persona, $tbl=self::TBL){
+        $ret = null;
+        if ($persona instanceof Persona){
+            $sql = "UPDATE {$tbl} SET 
+                nombre='{$persona->nombre}',
+                ap1='{$persona->ap1}',
+                ap2='{$persona->ap2}',
+                tipovia='{$persona->tipovia}',
+                direccion='{$persona->direccion}'
+            WHERE dni='{$persona->dni}'";
+            $ret = $this->bbdd->query($sql);
+        }
+        return $ret;
+    }
 }
