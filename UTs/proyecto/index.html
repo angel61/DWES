@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="application/x-javascript" src="lib.js"></script>
+</head>
+<body>
+    <div class="cabecera" id="cabecera"><h1>Cabecera</h1></div>
+    <div class="menu" id="menu">
+        <ul>
+            <li onclick="cargarGui('login','central');" id="login">login</li>
+            <li onclick="cargarGui('logout','central');" id="logout" style="display: none;">logout</li>
+            <li onclick="cargarGui('select','central');">select</li>
+            <li onclick="cargarGui('insert','central');">insert</li>
+            <li onclick="cargarGui('delete','central');">delete</li>
+        </ul>
+    </div>
+    <div class="central" id="central"></div>
+</body>
+</html>

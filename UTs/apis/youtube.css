@@ -1,0 +1,14 @@
+ul{
+    list-style: none;
+}
+.enlace{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(202, 202, 202);
+    text-decoration: none;
+
+    width: ;
+}

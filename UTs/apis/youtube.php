@@ -1,3 +1,5 @@
+
+    <link rel="stylesheet" href="youtube.css">
 <?php
 if (!filter_has_var(INPUT_POST, 'enviar')) {
     // Formulario para recoger palabras clave y nº de resultados a mostrar
@@ -28,9 +30,9 @@ if (!filter_has_var(INPUT_POST, 'enviar')) {
     try {
         $busqueda = $youtube->search->listSearch('id,snippet', array('q' => $palabras, 'maxResults' => $max));
         // Podemos ver la estructura de los resultados obtenidos
-        echo "<pre>";
-        print_r($busqueda);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($busqueda);
+        // echo "</pre>";
         // Almacenamos los resultados en tres string,
         // uno para cada tipo de elemento
         $videos = '';
@@ -42,12 +44,13 @@ if (!filter_has_var(INPUT_POST, 'enviar')) {
         // ( youtube#video, youtube#channel, youtube#playlist )
         foreach ($busqueda['items'] as $result) {
             $titulo = $result['snippet']['title'];
+            $miniatura = $result['snippet']['thumbnails']['medium']['url'];
             switch ($result['id']['kind']) {
                 case 'youtube#video':
                     $id = $result['id']['videoId'];
                     $enlace = "<a href=http://www.youtube.com/watch?v=" .
-                        $id . " target=_blank>" . $titulo . "</a>";
-                    $videos .= sprintf('<li>%s (%s)</li>', $enlace, $id);
+                        $id . " target=_blank><div class=\"enlace\"><img src=\"{$miniatura}\">  <span>{$titulo}</span></div </a>";
+                    $videos .= sprintf('<li>%s</li>', $enlace);
                     break;
                 case 'youtube#channel':
                     $id = $result['id']['channelId'];
@@ -64,9 +67,7 @@ if (!filter_has_var(INPUT_POST, 'enviar')) {
             }
         } // Mostramos los resultados
         echo "
-    <h3>Videos</h3> <ul>$videos</ul>
-    <h3>Canales</h3> <ul>$canales</ul>
-    <h3>Listas</h3>  <ul>$listas</ul>";
+    <h3>Videos</h3> <ul>$videos</ul>";
         // Controlamos los posibles errores
     } catch (Google_ServiceException $e) {
         $error = sprintf('<p>A service error occurred:
