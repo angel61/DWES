@@ -1,0 +1,35 @@
+.cabecera{}
+
+.central{}
+.tablaDatos{
+    width: 60%;
+    margin-left: 40px;
+}
+
+.tablaDatos tr:not(:first-of-type){
+    background-color: #6f6f6f;
+}
+
+
+.menu {
+    padding: 0;
+    display: table;
+}
+
+.menu li{
+    display: inline;
+    font-family: Arial;
+    font-size: 11px;
+    text-decoration: none;
+    float: left;
+    padding: 10px;
+    background-color: #2175bc;
+    color: #fff;
+    cursor: pointer;
+}
+
+.menu li:hover {
+    background-color: #2586d7;
+    margin-top: -2;
+    padding-bottom: 12px;]
+}
