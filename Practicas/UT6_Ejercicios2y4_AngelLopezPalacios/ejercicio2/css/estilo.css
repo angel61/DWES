@@ -1,0 +1,29 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+h1{
+    margin-left: 1em;
+}
+.centro{
+    padding: 1em;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1em;
+}
+.piso{
+    padding: 1em;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1em;
+    background-color: rgb(202, 202, 202);
+}
+iframe{
+    width: 30em;
+    height: 20em;
+}

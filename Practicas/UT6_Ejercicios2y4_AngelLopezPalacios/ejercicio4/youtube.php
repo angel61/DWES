@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="youtube.css">
+<link rel="stylesheet" href="css/youtube.css">
 <?php
 if (!filter_has_var(INPUT_POST, 'enviar')) {
     echo "
