@@ -15,28 +15,21 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <a class="navbar-brand" href="index.php">Tienda Guadalajara</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContenido"
-                aria-controls="navbarContenido" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContenido" aria-controls="navbarContenido" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarContenido">
-                <form method="POST" action="index.php"
-                    class="form-inline my-3 my-md-2 w-75 d-flex justify-content-center">
-                    <div class="input-group w-75">
+                <form method="POST" action="index.php" class="form-inline my-3 my-md-2 mx-lg-4 col-md-8 d-flex justify-content-center">
+                    <div class="input-group w-100">
                         <input class="form-control" type="text" placeholder="Buscar" name="inpBusqueda">
                         <button style="border-radius: 0px 5px 5px 0px;" class="btn btn-light">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
                 </form>
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="?paso=iniciar">Iniciar sesión</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?paso=registrar">Registrarse</a>
-                    </li>
+                <ul class="navbar-nav ml-3 mr-auto">
+                    <?php $this->printSesion();?>
                 </ul>
             </div>
         </nav>

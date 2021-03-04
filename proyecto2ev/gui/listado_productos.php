@@ -1,8 +1,9 @@
 <div class="container">
     <form method='POST' action='index.php' name='frmProductos'>
-        <div class="row">
-            <input type="hidden" name="hdnProducto" id="hdnProducto">
-            <?php $this->printProductos(); ?>
+        <div class="row listado">
+            <?php $this->printProductos(); 
+            $this->printPaginacion();
+            ?>
         </div>
     </form>
 </div>

@@ -5,18 +5,19 @@ class App
 {
     private function printHead()
     {
-        if (isset($_SESSION['usuarioDatos']))
-            include_once("gui/head_logged.php");
-        else
-            include_once("gui/head.html");
+        include_once("gui/head.php");
     }
     private function printBody()
     {
         $paso = $_REQUEST["paso"] ?? "";
-        $vistaProducto = isset($_REQUEST["hdnProducto"]);
-        $pasoInicio = $paso == "iniciar"&&!isset($_SESSION['usuarioDatos']);
-        $pasoRegistrar = $paso == "registrar"&&!isset($_SESSION['usuarioDatos']);
-        $pasoInfo = $paso == "info"&&isset($_SESSION['usuarioDatos']);
+        if ($paso != "anadirDireccion" && $paso != "anadirPago")
+            $_SESSION['ultimoPaso'] = $paso;
+        $vistaProducto = $paso == "producto";
+        $pasoInicio = $paso == "iniciar" && !isset($_SESSION['usuarioDatos']);
+        $pasoRegistrar = $paso == "registrar" && !isset($_SESSION['usuarioDatos']);
+        $pasoInfo = $paso == "info" && isset($_SESSION['usuarioDatos']);
+        $pasoAnadirDireccion = $paso == "anadirDireccion";
+        $pasoAnadirPago = $paso == "anadirPago";
         switch (true) {
             case $vistaProducto:
                 include_once("gui/vistaProducto.php");
@@ -30,6 +31,12 @@ class App
             case $pasoInfo:
                 include_once("gui/vistaUsuario.php");
                 break;
+            case $pasoAnadirDireccion:
+                include_once("gui/nuevaDireccion.php");
+                break;
+            case $pasoAnadirPago:
+                include_once("gui/nuevoPago.php");
+                break;
             default:
                 include_once("gui/listado_productos.php");
                 break;
@@ -42,19 +49,102 @@ class App
 
     public function printProductos()
     {
+        $busqueda = $_REQUEST["inpBusqueda"] ?? "";
+        $pagina = $_REQUEST['pagina'] ?? 1;
+        $limite = $_REQUEST['limite'] ?? 12;
         $bbdd = new BBDD();
-        $productos = $bbdd->getProductos();
+        $productos = $bbdd->getProductos($busqueda, $pagina, $limite);
         unset($bbdd);
 
+        if ($productos != null) {
+            echo "<input type='hidden' value='$busqueda' name='inpBusqueda'>";
+            foreach ($productos as $producto) {
+                $precio = number_format($producto->precio, 2, ',', '.') . "€";
+                echo '<div class="col-md-4 col-lg-3">
+                        <div class="card card-product">
+                            <div class="img-wrap"> 
+                                <img src="img\\' . $producto->rutaImg . '">
+                            </div>
+                            <div class="info-wrap">
+                                <h6 class="title text-dots"><a href="index.php?paso=producto&producto=' . $producto->id . '">' . $producto->nombre . '</a></h6>
+                                <div class="action-wrap">
+                                    <a href="#" class="btn btn-primary btn-sm float-right"> Comprar </a>
+                                    <div class="price-wrap h5">
+                                        <span class="price-new">' . $precio . '</span>
+                                        <del class="price-old"></del>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div> 
+                    </div>';
+            }
+        } else
+        echo "<div class='h2 text-secondary w-100 text-center pt-4'>No se encontro ningun producto.</div>";
+    }
+    public function printPaginacion($limite = 12)
+    {
+        $busqueda = $_REQUEST["inpBusqueda"] ?? "";
+        $bbdd = new BBDD();
+        $total = $bbdd->getTotalProductos($busqueda);
+        unset($bbdd);
 
-        foreach ($productos as $producto)
-            echo "<div  class=\"col-md-4 col-lg-3 card d-flex flex-column justify-content-between\" name='producto' onclick='vistaProducto({$producto->id});'>
-            <img class=\"card-img-top\" src=\"{$producto->rutaImg}\" alt=\"\">
-            <div class=\"card-body\">
-                <h5 class=\"card-title\">{$producto->nombre}</h5>
-                <p class=\"card-text\">{$producto->descripcion}</p>
-            </div>
-        </div>";
+        $pagina = $_REQUEST['pagina'] ?? 1;
+        $links = 2;
+
+        $ultimaPagina = ceil($total / $limite);
+
+        $principio = (($pagina - $links) > 0) ? $pagina - $links : 1;
+        $fin  = (($pagina + $links) < $ultimaPagina) ? $pagina + $links : $ultimaPagina;
+
+        $paginacion = '<ul class="w-100  justify-content-center py-lg-4 pagination">';
+
+        $clase = ($pagina == 1) ? "disabled" : "";
+        $paginacion .= '<li class="page-item ' . $clase . '"><a class="page-link" href="?pagina=' . ($pagina - 1) . '">&laquo;</a></li>';
+
+        if ($principio > 1) {
+            $paginacion .= '<li class="page-item"><a class="page-link" href="?pagina=1">1</a></li>';
+            $paginacion .= '<li class="page-item disabled"><span class="page-link">...</span></li>';
+        }
+
+        for ($i = $principio; $i <= $fin; $i++) {
+            $clase  = ($pagina == $i) ? "active" : "";
+            $paginacion .= '<li class="page-item ' . $clase . '"><a class="page-link" href="?pagina=' . $i . '">' . $i . '</a></li>';
+        }
+
+        if ($fin < $ultimaPagina) {
+            $paginacion .= '<li class="page-item disabled"><span class="page-link">...</span></li>';
+            $paginacion .= '<li class="page-item"><a class="page-link" href="?pagina=' . $ultimaPagina . '">' . $ultimaPagina . '</a></li>';
+        }
+
+        $clase = ($pagina == $ultimaPagina) ? "disabled" : "";
+        $paginacion .= '<li class="page-item ' . $clase . '"><a class="page-link" href="?pagina=' . ($pagina + 1) . '">&raquo;</a></li>';
+
+        $paginacion .= '</ul>';
+
+        if($total>0)
+        echo $paginacion;
+    }
+
+    private function printSesion()
+    {
+        if (isset($_SESSION['usuarioDatos'])) {
+            $nombreUsu = $_SESSION['usuarioDatos']['nombre'] ?? 'Usuario';
+            echo "
+            <li class=\"nav-item dropdown\">
+                <a class=\"nav-link dropdown-toggle\" href=\"http://example.com\" id=\"dropdown04\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" . $nombreUsu . "</a>
+                <div class=\"dropdown-menu\" aria-labelledby=\"dropdown04\">
+                    <a class=\"dropdown-item\" href=\"?paso=info\">Información personal</a>
+                    <a class=\"dropdown-item\" href=\"?cerrarSesion=true\">Cerrar sesión</a>
+                </div>
+            </li>";
+        } else
+            echo "
+            <li class=\"nav-item\">
+                <a class=\"nav-link\" href=\"?paso=iniciar\">Iniciar sesión</a>
+            </li>
+            <li class=\"nav-item\">
+                <a class=\"nav-link\" href=\"?paso=registrar\">Registrarse</a>
+            </li>";
     }
 
     private function printProducto($id)
@@ -64,8 +154,8 @@ class App
         unset($bbdd);
 
         if ($producto != null)
-            echo "<div  class=\"col-7\">
-        <img class=\"img-fluid\" src=\"{$producto->rutaImg}\" alt=\"\">
+            echo "<div  class=\"col-6\">
+        <img class=\"h-50  mx-auto d-block\" src=\"img\\{$producto->rutaImg}\" alt=\"\">
     </div>
     <div  class=\"col-5\">
     <h2>{$producto->nombre}</h2>
@@ -80,12 +170,36 @@ class App
         unset($bbdd);
 
         if ($usuario != null)
-        echo "<table class='table table-hover'>
+            echo "<table class='table table-hover'>
         <tr><th class='text-secondary'>NOMBRE</th><td>{$usuario->nombre}</td></tr>
         <tr><th class='text-secondary'>APELLIDOS</th><td>{$usuario->apellidos}</td></tr>
         <tr><th class='text-secondary'>CORREO</th><td>{$usuario->correo}</td></tr>
         <tr><th class='text-secondary'>CONTRASEÑA</th><td>*********</td></tr>
         </table>";
+    }
+
+    private function printDireccionEnvio()
+    {
+        $bbdd = new BBDD();
+        $direcciones = $bbdd->getDirecciones($_SESSION['usuarioDatos']['correo']);
+        unset($bbdd);
+
+        if ($direcciones != null)
+            foreach ($direcciones as $direccion)
+                echo "<option value='{$direccion->id}'>{$direccion->ciudad}, {$direccion->calle} {$direccion->piso}</option>";
+    }
+
+    private function printMetodoPago()
+    {
+        $bbdd = new BBDD();
+        $pagos = $bbdd->getPagos($_SESSION['usuarioDatos']['correo']);
+        unset($bbdd);
+
+        if ($pagos != null)
+            foreach ($pagos as $pago) {
+                $numero = str_split($pago->numero, 4)[0];
+                echo "<option value='{$pago->id}'>{$numero} **** **** ****</option>";
+            }
     }
     private function printErrorLogin()
     {
@@ -94,7 +208,7 @@ class App
             unset($_SESSION['errorLog']);
         }
     }
-    public function printErrorRegistrar()
+    private function prinErrorRegistrar()
     {
         if (isset($_SESSION['errorReg'])) {
             echo "<div class='text-danger pb-3'>{$_SESSION['errorReg']}</div>";
@@ -104,7 +218,7 @@ class App
     public function run($p = null)
     {
         //Cerrar sesion
-        if (isset($_REQUEST['cerrarSesion'])&&isset($_SESSION['usuarioDatos'])) {
+        if (isset($_REQUEST['cerrarSesion']) && isset($_SESSION['usuarioDatos'])) {
             unset($_SESSION['usuarioDatos']);
             header("Location: index.php");
         }
@@ -135,7 +249,42 @@ class App
             }
         }
 
+        //Eliminar direccion
+        if (isset($_REQUEST['deleteDireccion']) && isset($_REQUEST['slcDireccion']) && isset($_SESSION['usuarioDatos']['correo'])) {
+            $bbdd = new BBDD();
+            $exito = $bbdd->deleteDireccion($_REQUEST['slcDireccion'], $_SESSION['usuarioDatos']['correo']);
+            unset($bbdd);
+            header("Location: index.php?paso={$_SESSION['ultimoPaso']}");
+        }
+
+        //Añadir direccion
+        if (isset($_SESSION['usuarioDatos']['correo']) && isset($_REQUEST['inputPais']) && isset($_REQUEST['inputProvincia']) && isset($_REQUEST['inputCiudad']) && isset($_REQUEST['inputCalle']) && isset($_REQUEST['inputNumero'])) {
+            $bbdd = new BBDD();
+            $exito = $bbdd->setDireccion(new Direccion('', $_SESSION['usuarioDatos']['correo'], $_REQUEST['inputPais'], $_REQUEST['inputProvincia'], $_REQUEST['inputCiudad'], $_REQUEST['inputCalle'], $_REQUEST['inputNumero']));
+            unset($bbdd);
+            header("Location: index.php?paso={$_SESSION['ultimoPaso']}");
+        }
+
+        //Eliminar pago
+        if (isset($_REQUEST['deletePago']) && isset($_REQUEST['slcPago']) && isset($_SESSION['usuarioDatos']['correo'])) {
+            $bbdd = new BBDD();
+            $exito = $bbdd->deletePago($_REQUEST['slcPago'], $_SESSION['usuarioDatos']['correo']);
+            unset($bbdd);
+            header("Location: index.php?paso={$_SESSION['ultimoPaso']}");
+        }
+
+        //Añadir pago
+        if (isset($_SESSION['usuarioDatos']['correo']) && isset($_REQUEST['inputTitular']) && isset($_REQUEST['inputNumero']) && isset($_REQUEST['inputCaducidad']) && isset($_REQUEST['inputNumeroSecreto'])) {
+            $bbdd = new BBDD();
+            $exito = $bbdd->setPago(new Pago('', $_SESSION['usuarioDatos']['correo'], $_REQUEST['inputTitular'], $_REQUEST['inputNumero'], $_REQUEST['inputCaducidad'], $_REQUEST['inputNumeroSecreto']));
+            unset($bbdd);
+            header("Location: index.php?paso={$_SESSION['ultimoPaso']}");
+        }
+
         $this->printHead();
+
+        if (isset($_REQUEST["hdnProducto"]))
+            $_REQUEST["paso"] = "producto";
 
         $this->printBody();
 
