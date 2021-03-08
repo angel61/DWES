@@ -1,4 +1,5 @@
-  <div class="vh-100 d-flex justify-content-center align-items-center ">
+  <div class="container-fluid h-75">
+    <div class="row justify-content-center h-100 align-items-center">
     <div class="col-10 col-md-6 col-lg-3 card">
       <div class="card-body">
         <form method="POST" action="index.php" name="frmLogin">
@@ -13,4 +14,4 @@
       </div>
       </form>
     </div>
-  </div>
+  </div></div>

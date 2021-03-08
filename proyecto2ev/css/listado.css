@@ -58,3 +58,9 @@
         padding-bottom: 1em;
         gap: 1em 0;
     }
+
+    .imagen-producto img{
+        max-height:30em;
+        width:100%;
+        object-fit:contain;
+    }

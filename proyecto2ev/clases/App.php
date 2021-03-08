@@ -3,17 +3,18 @@
 
 class App
 {
+    //Funcion para añadir la cabecera a la web
     private function printHead()
     {
         include_once("gui/head.php");
     }
-    private function printBody()
+
+    //Funcion para añadir la parte de la web que se quiere visualizar
+    private function printBody($paso)
     {
-        $paso = $_REQUEST["paso"] ?? "";
-        if ($paso != "anadirDireccion" && $paso != "anadirPago")
-            $_SESSION['ultimoPaso'] = $paso;
         $vistaProducto = $paso == "producto";
-        $pasoInicio = $paso == "iniciar" && !isset($_SESSION['usuarioDatos']);
+        $finalizarPago = $paso == "finalizarCompra" && isset($_SESSION['usuarioDatos']);;
+        $pasoInicio = ($paso == "iniciar" && !isset($_SESSION['usuarioDatos'])) || ($paso == "finalizarCompra" && !$finalizarPago);
         $pasoRegistrar = $paso == "registrar" && !isset($_SESSION['usuarioDatos']);
         $pasoInfo = $paso == "info" && isset($_SESSION['usuarioDatos']);
         $pasoAnadirDireccion = $paso == "anadirDireccion";
@@ -37,16 +38,22 @@ class App
             case $pasoAnadirPago:
                 include_once("gui/nuevoPago.php");
                 break;
+            case $finalizarPago:
+                include_once("gui/finalizarPago.php");
+                break;
             default:
                 include_once("gui/listado_productos.php");
                 break;
         }
     }
+
+    //Funcion para añadir el pie a la web
     private function printFoot()
     {
         include_once("gui/foot.html");
     }
 
+    //Funcion que muestra en la web un listado de productos segun si se hizo una busqueda o no
     public function printProductos()
     {
         $busqueda = $_REQUEST["inpBusqueda"] ?? "";
@@ -56,10 +63,19 @@ class App
         $productos = $bbdd->getProductos($busqueda, $pagina, $limite);
         unset($bbdd);
 
+        //Si la consulta sql devuelve el listado de producto se muestran
+        //Si no devuelve nada se muestra un mensaje
         if ($productos != null) {
+            //Se guardan las palabras clave de la busqueda para en el caso de que se pase pagina no se pierda la consulta
             echo "<input type='hidden' value='$busqueda' name='inpBusqueda'>";
             foreach ($productos as $producto) {
                 $precio = number_format($producto->precio, 2, ',', '.') . "€";
+                $precioAnterior = "";
+                if ($producto->descuento > 0) {
+                    $precioAnterior = $precio;
+                    $precio = number_format(($producto->precio * (1 - ($producto->descuento / 100))), 2, ',', '.') . "€";
+                }
+
                 echo '<div class="col-md-4 col-lg-3">
                         <div class="card card-product">
                             <div class="img-wrap"> 
@@ -68,10 +84,10 @@ class App
                             <div class="info-wrap">
                                 <h6 class="title text-dots"><a href="index.php?paso=producto&producto=' . $producto->id . '">' . $producto->nombre . '</a></h6>
                                 <div class="action-wrap">
-                                    <a href="#" class="btn btn-primary btn-sm float-right"> Comprar </a>
+                                    <button class="btn btn-primary btn-sm float-right" name="comprarProducto" value="' . $producto->id . '"> Comprar </button>
                                     <div class="price-wrap h5">
                                         <span class="price-new">' . $precio . '</span>
-                                        <del class="price-old"></del>
+                                        <del class="price-old">' . $precioAnterior . '</del>
                                     </div> 
                                 </div>
                             </div>
@@ -79,8 +95,11 @@ class App
                     </div>';
             }
         } else
-        echo "<div class='h2 text-secondary w-100 text-center pt-4'>No se encontro ningun producto.</div>";
+            echo "<div class='h2 text-secondary w-100 text-center pt-4'>No se encontro ningun producto.</div>";
+        $this->printPaginacion($limite);
     }
+
+    //Muestra en la web el indice de la paginacion de los productos dinamicamente
     public function printPaginacion($limite = 12)
     {
         $busqueda = $_REQUEST["inpBusqueda"] ?? "";
@@ -91,8 +110,10 @@ class App
         $pagina = $_REQUEST['pagina'] ?? 1;
         $links = 2;
 
+        //Se determina el numero de paginas segun el total de productos que se quieran postrar
         $ultimaPagina = ceil($total / $limite);
 
+        //En estas dos variables se muestran la pagina del principio y otra del fin del indice
         $principio = (($pagina - $links) > 0) ? $pagina - $links : 1;
         $fin  = (($pagina + $links) < $ultimaPagina) ? $pagina + $links : $ultimaPagina;
 
@@ -121,10 +142,14 @@ class App
 
         $paginacion .= '</ul>';
 
-        if($total>0)
-        echo $paginacion;
+        if ($total > 0)
+            echo $paginacion;
     }
 
+    /*
+    Esta funcion sirve segun si el usuario a logeado o no mostrar en el navbar las funciones de login y registro 
+    o las de cerrar sesion y ver informacion personal
+    */
     private function printSesion()
     {
         if (isset($_SESSION['usuarioDatos'])) {
@@ -147,22 +172,66 @@ class App
             </li>";
     }
 
-    private function printProducto($id)
+    /*
+    Muestra la vista del producto par ver informacion mas detallada
+    */
+    private function printProducto()
     {
+        $id = $_REQUEST["producto"] ?? -1;
         $bbdd = new BBDD();
         $producto = $bbdd->getProducto($id);
         unset($bbdd);
 
-        if ($producto != null)
-            echo "<div  class=\"col-6\">
-        <img class=\"h-50  mx-auto d-block\" src=\"img\\{$producto->rutaImg}\" alt=\"\">
-    </div>
-    <div  class=\"col-5\">
-    <h2>{$producto->nombre}</h2>
-    <p>{$producto->descripcion}</p>
-</div>";
+        if ($producto != null) {
+            $precio = number_format($producto->precio, 2, ',', '.') . "€";
+            $precioAnterior = "";
+            if ($producto->descuento > 0) {
+                $precioAnterior = $precio;
+                $precio = number_format(($producto->precio * (1 - ($producto->descuento / 100))), 2, ',', '.') . "€";
+            }
+            $stockTexto = $producto->stock > 0 ? "En stock" : "Fuera de stock";
+            $stockColor = $producto->stock > 0 ? "text-success" : "text-danger";
+
+            echo '<div class="col-sm-5 border-right d-flex align-items-center justify-content-center overflow-hidden imagen-producto">
+                        <img src="img/' . $producto->rutaImg . '" alt="">
+            </div>
+            <div class="col-sm-7">
+                <div class="card-body p-5">
+                    <h2 class="title mb-3">' . $producto->nombre . '</h2>
+
+                    <p>
+                        <span class="h3">' . $precio . '</span>
+                        <del class="h4 text-secondary">' . $precioAnterior . '</del>
+                    </p>
+                    <div class="item-property">
+                        <div class="font-weight-bold">Descripción</div>
+                        <div>
+                            <p>' . $producto->descripcion . '</p>
+                        </div>
+                    </div>
+                    <div class="param param-feature ' . $stockColor . '">
+                        <div>' . $stockTexto . '</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="">
+                                <div class="font-weight-bold">Cantidad: </div>
+                                <div>
+                                    <input type="number" value="1" min="1" max="' . $producto->stock . '" name="nmbCantidad">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <button name="comprarProducto" value="' . $id . '" class="btn btn-lg btn-primary">Comprar</button>
+                    <!--a href="#" class="btn btn-lg btn-outline-primary"> <i class="fas fa-shopping-cart"></i> Añadir al carrito </a-->
+                </div>
+            </div>';
+        }
     }
 
+    //Esta funcion sirve para mostrar la informacion del usuario que fue rellenada cuando se registro 
     private function printInfoPersonal()
     {
         $bbdd = new BBDD();
@@ -171,13 +240,14 @@ class App
 
         if ($usuario != null)
             echo "<table class='table table-hover'>
-        <tr><th class='text-secondary'>NOMBRE</th><td>{$usuario->nombre}</td></tr>
-        <tr><th class='text-secondary'>APELLIDOS</th><td>{$usuario->apellidos}</td></tr>
-        <tr><th class='text-secondary'>CORREO</th><td>{$usuario->correo}</td></tr>
-        <tr><th class='text-secondary'>CONTRASEÑA</th><td>*********</td></tr>
-        </table>";
+                    <tr><th class='text-secondary'>NOMBRE</th><td>{$usuario->nombre}</td></tr>
+                    <tr><th class='text-secondary'>APELLIDOS</th><td>{$usuario->apellidos}</td></tr>
+                    <tr><th class='text-secondary'>CORREO</th><td>{$usuario->correo}</td></tr>
+                    <tr><th class='text-secondary'>CONTRASEÑA</th><td>*********</td></tr>
+                </table>";
     }
 
+    //Esta funcion añade a un select las opciones de cada direccion que dispone el usuario
     private function printDireccionEnvio()
     {
         $bbdd = new BBDD();
@@ -189,6 +259,7 @@ class App
                 echo "<option value='{$direccion->id}'>{$direccion->ciudad}, {$direccion->calle} {$direccion->piso}</option>";
     }
 
+    //Esta funcion añade a un select las opciones de cada metodo de pago que dispone el usuario
     private function printMetodoPago()
     {
         $bbdd = new BBDD();
@@ -201,6 +272,31 @@ class App
                 echo "<option value='{$pago->id}'>{$numero} **** **** ****</option>";
             }
     }
+
+    //Esta funcion añade a un select las opciones de cada metodo de pago que dispone el usuario
+    private function printFinalizarPago()
+    {
+        $id = $_REQUEST["comprarProducto"] ?? -1;
+        $cantidad = $_REQUEST["nmbCantidad"] ?? 1;
+        $bbdd = new BBDD();
+        $producto = $bbdd->getProducto($id);
+        unset($bbdd);
+
+        if ($producto != null) {
+            $precio = number_format($cantidad*$producto->precio, 2, ',', '.') . "€";
+            if ($producto->descuento > 0) {
+                $precio = number_format($cantidad*($producto->precio * (1 - ($producto->descuento / 100))), 2, ',', '.') . "€";
+            }
+            echo "
+            <div class='card-title h3'>Precio total: <span class='h4'>{$precio}</span></div>
+            <div class='d-flex py-3'>
+              <input type='hidden' name='hdnCantidad' value='{$cantidad}'>
+              <button name='productoComprado' value='{$id}' class='btn btn-primary'>Finalizar pago</button>
+            </div>";
+        }
+    }
+
+    //Esta funcion muestra un mensaje de error en el login
     private function printErrorLogin()
     {
         if (isset($_SESSION['errorLog'])) {
@@ -208,6 +304,8 @@ class App
             unset($_SESSION['errorLog']);
         }
     }
+
+    //Esta funcion muestra un mensaje de error en el registro
     private function prinErrorRegistrar()
     {
         if (isset($_SESSION['errorReg'])) {
@@ -215,6 +313,8 @@ class App
             unset($_SESSION['errorReg']);
         }
     }
+
+    //Funcion que se encarga de mostrar todas la partes de la web y de su funcionalidad
     public function run($p = null)
     {
         //Cerrar sesion
@@ -223,7 +323,7 @@ class App
             header("Location: index.php");
         }
 
-        //Login
+        //Validacion del login
         if (isset($_REQUEST['loginEmail']) && isset($_REQUEST['loginPass'])) {
             $bbdd = new BBDD();
             $usuario = $bbdd->login($_REQUEST['loginEmail'], $_REQUEST['loginPass']);
@@ -236,7 +336,7 @@ class App
             }
         }
 
-        //Registro
+        //Validacion del registro
         if (isset($_REQUEST['registrarNombre']) && isset($_REQUEST['registrarApellidos']) && isset($_REQUEST['registrarEmail']) && isset($_REQUEST['registrarPass'])) {
             $bbdd = new BBDD();
             $registro = $bbdd->setUsuario(new Usuario($_REQUEST['registrarNombre'], $_REQUEST['registrarApellidos'], $_REQUEST['registrarEmail'], $_REQUEST['registrarPass']));
@@ -281,12 +381,28 @@ class App
             header("Location: index.php?paso={$_SESSION['ultimoPaso']}");
         }
 
+        //Realizar Compra
+        if (isset($_SESSION['usuarioDatos']['correo']) && isset($_REQUEST['slcDireccion']) && isset($_REQUEST['slcPago']) && isset($_REQUEST['hdnCantidad']) && isset($_REQUEST['productoComprado'])) {
+            $bbdd = new BBDD();
+            try{
+            $exito = $bbdd->setCompra(new Compra('', intval($_REQUEST['slcPago']), intval($_REQUEST['productoComprado']), intval($_REQUEST['slcDireccion']), $_SESSION['usuarioDatos']['correo'], intval($_REQUEST['hdnCantidad']), 'F'));
+            }catch(Exception $e){
+                
+            }
+            unset($bbdd);
+            header("Location: index.php");
+        }
+
         $this->printHead();
 
-        if (isset($_REQUEST["hdnProducto"]))
-            $_REQUEST["paso"] = "producto";
 
-        $this->printBody();
+        if (isset($_REQUEST["comprarProducto"]))
+            $_REQUEST["paso"] = "finalizarCompra";
+
+        $paso = $_REQUEST["paso"] ?? "";
+        if ($paso != "anadirDireccion" && $paso != "anadirPago")
+            $_SESSION['ultimoPaso'] = $paso;
+        $this->printBody($paso);
 
         $this->printFoot();
     }

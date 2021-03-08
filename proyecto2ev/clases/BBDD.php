@@ -131,6 +131,16 @@ class BBDD
 
         return $ret;
     }
+    public function getDireccion($id=0,$correo='')
+    {
+        $ret = null;
+        $sql = "SELECT * FROM direccion WHERE correo='$correo' and Id_direccion='$id'";
+        $result = $this->bbdd->query($sql);
+        while ($row = $result->fetch_assoc())
+            $ret[] = new Direccion($row['ID_direccion'], $row['correo'], $row['pais'], $row['provincia'], $row['ciudad'], $row['calle'], $row['piso']);
+
+        return $ret;
+    }
 
     public function deleteDireccion($id=0,$correo='')
     {
@@ -193,4 +203,22 @@ class BBDD
         return $ret;
     }
     /* Fin tabla pagos */
+
+    /* Inicio tabla compra */
+
+    public function setCompra($compra=null)
+    {
+        $ret = null;
+        if ($compra instanceof Compra) {
+
+
+            $sql = "INSERT INTO compra (ID_pago,ID_producto,ID_direccion,correo,cantidad,proceso) VALUES (?,?,?,?,?,?)";
+            $stmt = $this->bbdd->prepare($sql);
+            $stmt->bind_param("iiisis", $compra->idPago, $compra->idProducto, $compra->idDireccion, $compra->correo, $compra->cantidad, $compra->proceso);
+
+            $ret = $stmt->execute();
+        }
+        return $ret;
+    }
+    /* Fin tabla compra */
 }

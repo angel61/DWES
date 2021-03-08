@@ -1,4 +1,4 @@
-<div class="vh-100 d-flex justify-content-center align-items-center ">
+<div class="mh-75 my-3 my-md-0 d-flex justify-content-center align-items-center ">
   <div class="col-10 col-md-6 col-lg-5 card">
     <div class="card-body">
       <form method="POST" action="index.php" name="frmAddDireccion">

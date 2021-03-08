@@ -1,8 +1,7 @@
-<div class="vh-100 d-flex justify-content-center align-items-center ">
+<div class="h-75 d-flex justify-content-center align-items-center ">
   <div class="col-10 col-md-6 col-lg-5 card">
     <div class="card-body">
       <form method="POST" action="index.php" name="frmRegistrar">
-        <!--img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"-->
         <h1 class="card-title">Registrarse</h1>
         <div class="row">
           <div class="col-md-6">

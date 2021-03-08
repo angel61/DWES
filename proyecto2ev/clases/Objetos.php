@@ -96,3 +96,33 @@ class Pago
         $this->numSecreto = $this->convert($numSecreto);
     }
 }
+
+class Compra
+{
+    public $id;
+    public $idPago;
+    public $idProducto;
+    public $idDireccion;
+    public $correo;
+    public $cantidad;
+    public $proceso;
+
+    private function convert($p){
+        return addslashes(trim(htmlspecialchars($p)));
+    }
+
+    public function __construct($id='',$idPago='',$idProducto='',$idDireccion='',$correo='',$cantidad='',$proceso=''){
+        if (!is_numeric($id)) $id=0;
+        $this->id = $id;
+        if (!is_numeric($idPago)) $idPago=0;
+        $this->idPago = $idPago;
+        if (!is_numeric($idProducto)) $idProducto=0;
+        $this->idProducto = $idProducto;
+        if (!is_numeric($idDireccion)) $idDireccion=0;
+        $this->idDireccion = $idDireccion;
+        $this->correo = $this->convert($correo);
+        if (!is_numeric($cantidad)) $cantidad=1;
+        $this->cantidad = $cantidad;
+        $this->proceso = $this->convert($proceso);
+    }
+}

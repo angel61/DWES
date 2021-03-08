@@ -11,7 +11,7 @@
     <title>Tienda guadalajara</title>
 </head>
 
-<body>
+<body class="vh-100">
     <header>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <a class="navbar-brand" href="index.php">Tienda Guadalajara</a>
@@ -34,5 +34,3 @@
             </div>
         </nav>
     </header>
-
-    <body>
