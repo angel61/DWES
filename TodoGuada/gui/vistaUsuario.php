@@ -10,7 +10,7 @@
       <div class="card-body">
         <h1 class="card-title h3">Direcciones de envio</h1>
         <form action="index.php" method="post">
-          <select multiple class="form-control" name="slcDireccion" id="slcDireccion">
+          <select  class="form-control" name="slcDireccion" id="slcDireccion">
             <?php $this->printDireccionEnvio(); ?>
           </select>
           <div class="d-flex py-3">
@@ -24,7 +24,7 @@
       <div class="card-body">
         <h1 class="card-title h3">Métodos de pago</h1>
         <form action="index.php" method="post">
-          <select multiple class="form-control" name="slcPago" id="slcPago">
+          <select class="form-control" name="slcPago" id="slcPago">
             <?php $this->printMetodoPago(); ?>
           </select>
           <div class="d-flex py-3">

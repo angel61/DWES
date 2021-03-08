@@ -14,7 +14,7 @@
 <body class="vh-100">
     <header>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <a class="navbar-brand" href="index.php">Tienda Guadalajara</a>
+            <a class="navbar-brand" href="index.php">Todo Guada</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContenido" aria-controls="navbarContenido" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

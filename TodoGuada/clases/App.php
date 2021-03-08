@@ -278,6 +278,9 @@ class App
     {
         $id = $_REQUEST["comprarProducto"] ?? -1;
         $cantidad = $_REQUEST["nmbCantidad"] ?? 1;
+        if(!is_numeric($cantidad)){
+            $cantidad=1;
+        }
         $bbdd = new BBDD();
         $producto = $bbdd->getProducto($id);
         unset($bbdd);

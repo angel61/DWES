@@ -5,7 +5,7 @@ class BBDD
     private const SRV = 'localhost';
     private const USR = 'root';
     private const PWD = '';
-    private const BBDD = 'tienda';
+    private const BBDD = 'todo_guada';
     private $bbdd;
 
     public function __construct()
